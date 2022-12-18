@@ -1,15 +1,10 @@
-import './App.css'
-import { login } from './state/actions/authActions'
-import { useDispatch } from 'react-redux'
+import Auth from './components/Auth/Auth'
+import { useSelector } from 'react-redux'
+import Dashboard from './components/Dashboard'
 
 function App() {
-  const dispatch = useDispatch()
-
-  return (
-    <div className='App'>
-      <button onClick={() => dispatch(login())}>LOGIN</button>
-    </div>
-  )
+  const auth = useSelector((state) => state.auth)
+  return <div>{auth.department === null ? <Auth /> : <Dashboard />}</div>
 }
 
 export default App

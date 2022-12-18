@@ -28,8 +28,17 @@ const authReducer = (state = initState, action) => {
         authError: 'Incorrect Password',
         department: null,
       }
-    case 'SIGN_OUT_SUCCESS':
-      return state
+    case 'REGISTER_REQUEST_ERROR':
+      return {
+        ...state,
+        authError: 'Login Failed',
+      }
+    case 'REGISTER_SUCCESS':
+      return {
+        ...state,
+        department: action.payload,
+        authError: null,
+      }
     default:
       return state
   }
