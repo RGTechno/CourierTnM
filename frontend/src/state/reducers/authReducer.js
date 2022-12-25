@@ -39,6 +39,20 @@ const authReducer = (state = initState, action) => {
         department: action.payload,
         authError: null,
       }
+
+    case 'REGISTER_FAILURE':
+      return {
+        ...state,
+        department: null,
+        authError: action.payload.message,
+      }
+
+    case 'LOGOUT':
+      return {
+        ...state,
+        department: null,
+        authError: null,
+      }
     default:
       return state
   }

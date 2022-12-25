@@ -5,36 +5,49 @@ const {
 } = require('../utils/password_encrypt_decrypt_helper')
 
 async function addDepartment(req, res) {
-  if (!req.body.password) {
-    return res.status(400).json({
-      status: 'failure',
-      message: 'Invalid Password Input',
-      data: {},
-    })
-  }
-  const securePassword = await encryptPassword(req.body.password)
-  if (securePassword === null) {
-    return res.status(500).json({
-      status: 'failure',
-      message: 'Password Encryption failed',
-      data: {},
-    })
-  }
-  const department = new Department({
-    name: req.body.name,
-    location: req.body.location,
-    registrationNumber: req.body.registrationNumber,
-    contactEmail: req.body.contactEmail,
-    contactNumber: req.body.contactNumber,
-    password: securePassword,
-    city: req.body.city,
-    state: req.body.state,
-    pinCode: req.body.pinCode,
-    country: req.body.country,
-  })
-
   try {
+    const departmentExist = await Department.findOne({
+      registrationNumber: req.body.registrationNumber,
+    })
+    if (departmentExist) {
+      return res.status(400).json({
+        status: 'failure',
+        message: 'Department with given registration number already exists',
+        data: {},
+      })
+    }
+    if (!req.body.password) {
+      return res.status(400).json({
+        status: 'failure',
+        message: 'Invalid Password Input',
+        data: {},
+      })
+    }
+    const securePassword = await encryptPassword(req.body.password)
+    if (securePassword === null) {
+      return res.status(500).json({
+        status: 'failure',
+        message: 'Password Encryption failed',
+        data: {},
+      })
+    }
+    const department = new Department({
+      name: req.body.name,
+      location: req.body.location,
+      registrationNumber: req.body.registrationNumber,
+      contactEmail: req.body.contactEmail,
+      contactNumber: req.body.contactNumber,
+      password: securePassword,
+      city: req.body.city,
+      state: req.body.state,
+      pinCode: req.body.pinCode,
+      country: req.body.country,
+    })
+
     const newDepartment = await department.save()
+
+    delete newDepartment.password
+
     return res.status(201).json({
       status: 'success',
       message: 'Department added successfully',
@@ -66,6 +79,7 @@ async function loginDepartment(req, res) {
       userInputPassword,
       department.password
     )
+
     if (decryptedPasswordDB) {
       return res.status(200).json({
         status: 'success',

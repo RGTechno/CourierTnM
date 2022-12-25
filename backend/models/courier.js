@@ -42,4 +42,4 @@ const courierSchema = new mongoose.Schema({
   },
 })
 
-module.exports = mongoose.model('Courier', courierSchema) // Employees is the name of the collection in which each instanse(document) is create acc to the employeeSchema
+module.exports = mongoose.model('Courier', courierSchema) 

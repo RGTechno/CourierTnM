@@ -1,10 +1,16 @@
 import Auth from './components/Auth/Auth'
 import { useSelector } from 'react-redux'
 import Dashboard from './components/Dashboard'
+import { BrowserRouter } from 'react-router-dom'
 
 function App() {
   const auth = useSelector((state) => state.auth)
-  return <div>{auth.department === null ? <Auth /> : <Dashboard />}</div>
+
+  return (
+    <BrowserRouter>
+      {auth.department === null ? <Auth /> : <Dashboard />}
+    </BrowserRouter>
+  )
 }
 
 export default App

@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify'
+
 export const login = (credential) => {
   return (dispatch) => {
     const url = '/api/loginDepartment'
@@ -16,9 +18,29 @@ export const login = (credential) => {
           dispatch({
             type: 'DEPARTMENT_NOT_FOUND',
           })
+          toast.error('Department not found with given credentials', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
         } else if (response.status === 401) {
           dispatch({
             type: 'INVALID_PASSWORD',
+          })
+          toast.error('Invalid Password', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
           })
         } else if (response.status === 200) {
           response.json().then((res) => {
@@ -59,17 +81,44 @@ export const register = (details) => {
       },
     })
       .then((response) => {
-        response.json().then((res) => {
-          dispatch({
-            type: 'REGISTER_SUCCESS',
-            payload: res.data,
+        if (response.status === 400) {
+          response.json().then((res) => {
+            dispatch({
+              type: 'REGISTER_FAILURE',
+              payload: res,
+            })
+            toast.error(res.message, {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'light',
+            })
           })
-        })
+        } else if (response.status === 200) {
+          response.json().then((res) => {
+            dispatch({
+              type: 'REGISTER_SUCCESS',
+              payload: res.data,
+            })
+          })
+        }
       })
       .catch((error) => {
         dispatch({
           type: 'REGISTER_REQUEST_ERROR',
         })
       })
+  }
+}
+
+export const logout = () => {
+  return (dispatch) => {
+    dispatch({
+      type: 'LOGOUT',
+    })
   }
 }
