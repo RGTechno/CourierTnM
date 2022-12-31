@@ -8,7 +8,7 @@ function App() {
 
   return (
     <BrowserRouter>
-      {auth.department === null ? <Auth /> : <Dashboard />}
+      {auth.accessToken === null ? <Auth /> : <Dashboard />}
     </BrowserRouter>
   )
 }

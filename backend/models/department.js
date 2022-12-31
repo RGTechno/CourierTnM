@@ -44,7 +44,6 @@ const departmentSchema = new mongoose.Schema({
     required: true,
     default: 'India',
   },
-  couriers: [{ type: mongoose.Schema.ObjectId, ref: 'Courier' }],
 })
 
 module.exports = mongoose.model('Department', departmentSchema)

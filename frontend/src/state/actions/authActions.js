@@ -46,7 +46,7 @@ export const login = (credential) => {
           response.json().then((res) => {
             dispatch({
               type: 'LOGIN_SUCCESS',
-              payload: res.data,
+              payload: res.data.accessToken,
             })
           })
         }
@@ -102,7 +102,7 @@ export const register = (details) => {
           response.json().then((res) => {
             dispatch({
               type: 'REGISTER_SUCCESS',
-              payload: res.data,
+              payload: res.data.accessToken,
             })
           })
         }
@@ -110,6 +110,87 @@ export const register = (details) => {
       .catch((error) => {
         dispatch({
           type: 'REGISTER_REQUEST_ERROR',
+        })
+      })
+  }
+}
+
+export const getDepartmentInfo = (accessToken) => {
+  return (dispatch) => {
+    const url = '/api/getDepartmentInfo'
+    fetch(url, {
+      method: 'get',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+      .then((response) => {
+        if (response.status === 404) {
+          dispatch({
+            type: 'DEPARTMENT_NOT_FOUND',
+          })
+          toast.error('Department not found with given credentials', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+        } else if (response.status === 401) {
+          dispatch({
+            type: 'UNAUTHORIZED',
+          })
+          toast.error('Unauthorized', {
+            position: 'top-right',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+        } else if (response.status === 403) {
+          dispatch({
+            type: 'INVALID_ACCESS_TOKEN',
+          })
+          toast.error('Invalid access token', {
+            position: 'top-right',
+            autoClose: 1500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+          })
+        } else if (response.status === 200) {
+          response.json().then((res) => {
+            dispatch({
+              type: 'PROFILE_FETCH_SUCCESS',
+              payload: res.data,
+            })
+          })
+        }
+      })
+      .catch((error) => {
+        dispatch({
+          type: 'PROFILE_FETCH_ERROR',
+          payload: 'Something went wrong !',
+        })
+        toast.error(error.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
         })
       })
   }

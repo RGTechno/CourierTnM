@@ -20,7 +20,7 @@ const Auth = () => {
       ) : (
         <SignUp handleAuthToggle={changeAuthType} />
       )}
-      {auth.department === null && auth.authError != null && (
+      {auth.accessToken === null && auth.error != null && (
         <ToastContainer autoClose={5000} />
       )}
     </div>

@@ -37,7 +37,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 const Sidebar = () => {
   const department = useSelector((state) => state.auth.department)
 
-  const [isCollapsed, setIsCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState(false)
   const [selected, setSelected] = useState('Dashboard')
 
   const dispatch = useDispatch()
@@ -63,19 +63,19 @@ const Sidebar = () => {
         },
       }}
     >
-      <ProSidebar collapsed={isCollapsed}>
+      <ProSidebar collapsed={collapsed}>
         <SidebarContent>
           <Menu iconShape='square'>
             {/* LOGO AND MENU ICON */}
             <MenuItem
-              onClick={() => setIsCollapsed(!isCollapsed)}
-              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+              onClick={() => setCollapsed(!collapsed)}
+              icon={collapsed ? <MenuOutlinedIcon /> : undefined}
               style={{
                 margin: '10px 0 20px 0',
                 color: colors.grey[100],
               }}
             >
-              {!isCollapsed && (
+              {!collapsed && (
                 <Box
                   display='flex'
                   justifyContent='space-between'
@@ -85,14 +85,19 @@ const Sidebar = () => {
                   <Typography variant='h5' color={colors.grey[100]}>
                     CourierTnM
                   </Typography>
-                  <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                  <IconButton
+                    onClick={() => setCollapsed(!collapsed)}
+                    style={{
+                      color: colors.grey[100],
+                    }}
+                  >
                     <MenuOutlinedIcon />
                   </IconButton>
                 </Box>
               )}
             </MenuItem>
 
-            {!isCollapsed && (
+            {!collapsed && (
               <Box mb='25px'>
                 <Box display='flex' justifyContent='center' alignItems='center'>
                   <img
@@ -119,7 +124,7 @@ const Sidebar = () => {
               </Box>
             )}
 
-            <Box paddingLeft={isCollapsed ? undefined : '10%'}>
+            <Box paddingLeft={collapsed ? undefined : '10%'}>
               <Item
                 title='Dashboard'
                 to='/'

@@ -1,9 +1,17 @@
+require('dotenv').config()
+
 const Department = require('../models/department')
 const {
   encryptPassword,
   decryptPassword,
 } = require('../utils/password_encrypt_decrypt_helper')
+const jwt = require('jsonwebtoken')
 
+/*
+@ method: post
+@ desc: registration of courier agency
+@ access: public
+*/
 async function addDepartment(req, res) {
   try {
     const departmentExist = await Department.findOne({
@@ -46,18 +54,24 @@ async function addDepartment(req, res) {
 
     const newDepartment = await department.save()
 
-    delete newDepartment.password
+    const loggedInDepartment = { _id: department._id }
+    const accessToken = jwt.sign(loggedInDepartment, process.env.JWT_SECRET)
 
     return res.status(201).json({
       status: 'success',
       message: 'Department added successfully',
-      data: newDepartment,
+      data: { accessToken },
     }) // 201 => creation success
   } catch (error) {
     return res.status(400).json({ message: error.message }) // 400 => invalid user inputs
   }
 }
 
+/*
+@ method: post
+@ desc: login of courier agency
+@ access: public
+*/
 async function loginDepartment(req, res) {
   const regNo = req.body.registrationNumber
   const userInputPassword = req.body.password
@@ -75,6 +89,9 @@ async function loginDepartment(req, res) {
       })
     }
 
+    const loggedInDepartment = { _id: department._id }
+    const accessToken = jwt.sign(loggedInDepartment, process.env.JWT_SECRET)
+
     const decryptedPasswordDB = await decryptPassword(
       userInputPassword,
       department.password
@@ -84,7 +101,7 @@ async function loginDepartment(req, res) {
       return res.status(200).json({
         status: 'success',
         message: 'Login Success',
-        data: department,
+        data: { accessToken },
       })
     } else {
       return res.status(401).json({
@@ -98,7 +115,37 @@ async function loginDepartment(req, res) {
   }
 }
 
+/*
+@ method: get
+@ desc: profile of courier agency
+@ access: private
+*/
+async function getDepartmentProfile(req, res) {
+  try {
+    const departmentId = req.department._id
+    const department = await Department.findById(departmentId).select(
+      '-password'
+    )
+    if (department) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'Department found successfully',
+        data: department,
+      })
+    }
+
+    return res.status(404).json({
+      status: 'failure',
+      message: 'Department not found',
+      data: {},
+    })
+  } catch (error) {
+    return new Error(error.message)
+  }
+}
+
 module.exports = {
   addDepartment,
   loginDepartment,
+  getDepartmentProfile,
 }
