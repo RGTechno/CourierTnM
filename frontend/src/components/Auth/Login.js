@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography'
 import { useDispatch } from 'react-redux'
 import { login } from '../../state/actions/authActions'
 
+
 function Login(prop) {
   const dispatch = useDispatch()
   const handleLogin = (event) => {
@@ -31,18 +32,19 @@ function Login(prop) {
     <Container maxWidth='s'>
       <Box
         sx={{
-          marginTop: 10,
+          padding: 10,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
         }}
       >
-        <Typography component='h1' variant='h5'>
-          Login
-        </Typography>
+        <div id='loginText' style={{ fontSize: '20pt', fontWeight: 'bold' }}>
+          Hey! Welcome
+        </div>
+        <div style={{color:"grey",fontSize:"10pt"}}>Login to deliver with ease</div>
         <Box component='form' onSubmit={handleLogin} sx={{ mt: 1 }}>
           <TextField
             margin='normal'
+            variant='standard'
             required
             fullWidth
             id='registrationNumber'
@@ -52,6 +54,7 @@ function Login(prop) {
           />
           <TextField
             margin='normal'
+            variant='standard'
             required
             fullWidth
             name='password'
@@ -64,14 +67,36 @@ function Login(prop) {
             type='submit'
             fullWidth
             variant='contained'
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              borderRadius: '20px',
+              color: 'white',
+              backgroundColor: 'black',
+            }}
           >
             Login
+          </Button>
+          <Button
+            variant='text'
+            sx={{
+              borderRadius: '20px',
+              color: 'black',
+            }}
+          >
+            Forgot Password
           </Button>
           <Grid container>
             <Grid item>
               <Button
+                fullWidth
                 variant='text'
+                sx={{
+                  mt: 3,
+                  mb: 2,
+                  borderRadius: '20px',
+                  color: 'black',
+                }}
                 onClick={() => prop.handleAuthToggle(true)}
               >
                 Create an Account

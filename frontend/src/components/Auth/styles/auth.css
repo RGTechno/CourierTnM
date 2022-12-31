@@ -1,5 +1,3 @@
-.authRoot {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+#authForm {
+  height: 100vh;
 }

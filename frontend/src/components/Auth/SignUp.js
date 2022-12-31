@@ -44,23 +44,25 @@ function SignUp(prop) {
   }
 
   return (
-    <Container component='main' maxWidth='xs'>
+    <Container maxWidth='s'>
       <Box
         sx={{
-          marginTop: 10,
+          paddingTop: 10,
+          px: 10,
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
         }}
       >
-        <Typography component='h1' variant='h5'>
-          Sign up
-        </Typography>
-        <Box component='form' noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <div style={{ fontSize: '20pt', fontWeight: 'bold' }}>
+          Create an account !
+        </div>
+        <div style={{color:"grey",fontSize:"10pt"}}>Register into the world of automated deliveries</div>
+        <Box component='form' onSubmit={handleSubmit} sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 name='departmentName'
+                variant='standard'
                 required
                 fullWidth
                 id='departmentName'
@@ -71,6 +73,7 @@ function SignUp(prop) {
             <Grid item xs={12}>
               <TextField
                 required
+                variant='standard'
                 fullWidth
                 id='registrationNumber'
                 label='Registration Number'
@@ -81,6 +84,7 @@ function SignUp(prop) {
               <TextField
                 required
                 fullWidth
+                variant='standard'
                 id='email'
                 label='Email Address'
                 name='email'
@@ -91,6 +95,7 @@ function SignUp(prop) {
               <TextField
                 required
                 fullWidth
+                variant='standard'
                 name='phone'
                 label='Phone'
                 id='phone'
@@ -99,6 +104,7 @@ function SignUp(prop) {
             <Grid item xs={12}>
               <TextField
                 required
+                variant='standard'
                 fullWidth
                 id='address'
                 label='Address'
@@ -108,24 +114,7 @@ function SignUp(prop) {
             <Grid item xs={12} sm={3}>
               <TextField
                 required
-                fullWidth
-                name='city'
-                label='City'
-                id='city'
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                required
-                fullWidth
-                name='state'
-                label='State'
-                id='state'
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                required
+                variant='standard'
                 fullWidth
                 name='country'
                 label='Country'
@@ -135,7 +124,29 @@ function SignUp(prop) {
             <Grid item xs={12} sm={3}>
               <TextField
                 required
+                variant='standard'
                 fullWidth
+                name='state'
+                label='State'
+                id='state'
+              />
+            </Grid>
+            <Grid item xs={12} sm={3}>
+              <TextField
+                required
+                variant='standard'
+                fullWidth
+                name='city'
+                label='City'
+                id='city'
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={3}>
+              <TextField
+                required
+                fullWidth
+                variant='standard'
                 name='pincode'
                 label='Pincode'
                 id='pincode'
@@ -145,6 +156,7 @@ function SignUp(prop) {
               <TextField
                 required
                 fullWidth
+                variant='standard'
                 type='password'
                 name='password'
                 label='Password'
@@ -156,14 +168,26 @@ function SignUp(prop) {
             type='submit'
             fullWidth
             variant='contained'
-            sx={{ mt: 3, mb: 2 }}
+            sx={{
+              mt: 3,
+              mb: 2,
+              color: 'white',
+              backgroundColor: 'black',
+              borderRadius: '20px',
+            }}
           >
             Sign Up
           </Button>
           <Grid container justifyContent='flex-end'>
             <Grid item>
               <Button
+                fullWidth
                 variant='text'
+                sx={{
+                  mt: 3,
+                  borderRadius: '20px',
+                  color: 'black',
+                }}
                 onClick={() => prop.handleAuthToggle(false)}
               >
                 Already have an account? Login
