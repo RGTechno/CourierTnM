@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(getDepartmentInfo(state.auth.accessToken))
-  },[])
+  }, [state.auth.accessToken])
 
   return state.auth.department == null ? (
     <>LOADING...</>

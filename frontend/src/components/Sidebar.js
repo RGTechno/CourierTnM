@@ -9,7 +9,7 @@ import {
 import { Box, IconButton, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import 'react-pro-sidebar/dist/css/styles.css'
-import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined'
+import HomeIcon from '@mui/icons-material/Home'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import { useDispatch } from 'react-redux'
@@ -18,12 +18,19 @@ import colors from '../colors'
 import '../styles/Sidebar.css'
 import { useSelector } from 'react-redux'
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
   return (
     <MenuItem
       active={selected === title}
       style={{
-        color: colors.grey[100],
+        color: collapsed ? colors.iconColor : 'black',
+        backgroundColor: collapsed
+          ? undefined
+          : selected === title
+          ? colors.active
+          : 'transparent',
+        fontWeight: 'bold',
+        borderRadius: '5px',
       }}
       onClick={() => setSelected(title)}
       icon={icon}
@@ -47,19 +54,13 @@ const Sidebar = () => {
       id='sidebar'
       sx={{
         '& .pro-sidebar-inner': {
-          background: `${colors.primary[400]} !important`,
+          background: `${colors.primary} !important`,
         },
         '& .pro-icon-wrapper': {
           backgroundColor: 'transparent !important',
         },
         '& .pro-inner-item': {
           padding: '5px 35px 5px 20px !important',
-        },
-        '& .pro-inner-item:hover': {
-          color: '#868dfb !important',
-        },
-        '& .pro-menu-item.active': {
-          color: '#6870fa !important',
         },
       }}
     >
@@ -72,7 +73,7 @@ const Sidebar = () => {
               icon={collapsed ? <MenuOutlinedIcon /> : undefined}
               style={{
                 margin: '10px 0 20px 0',
-                color: colors.grey[100],
+                color: 'black',
               }}
             >
               {!collapsed && (
@@ -82,14 +83,15 @@ const Sidebar = () => {
                   alignItems='center'
                   ml='15px'
                 >
-                  <Typography variant='h5' color={colors.grey[100]}>
+                  <Typography
+                    variant='h5'
+                    style={{ color: 'black', fontWeight: 'bold' }}
+                  >
                     CourierTnM
                   </Typography>
                   <IconButton
                     onClick={() => setCollapsed(!collapsed)}
-                    style={{
-                      color: colors.grey[100],
-                    }}
+                    style={{ color: 'black' }}
                   >
                     <MenuOutlinedIcon />
                   </IconButton>
@@ -111,26 +113,30 @@ const Sidebar = () => {
                 <Box textAlign='center'>
                   <Typography
                     variant='h5'
-                    color={colors.grey[100]}
                     fontWeight='bold'
-                    sx={{ m: '10px 0 0 0' }}
+                    sx={{ m: '10px 0 0 0', color: 'black' }}
                   >
                     {department.name}
                   </Typography>
-                  <Typography color={colors.grey[100]}>
+                  <Typography>
                     Registration Number #{department.registrationNumber}
                   </Typography>
                 </Box>
               </Box>
             )}
 
-            <Box paddingLeft={collapsed ? undefined : '10%'}>
+            <Box
+              paddingLeft={collapsed ? undefined : '10%'}
+              marginRight={2}
+              marginTop={1}
+            >
               <Item
                 title='Dashboard'
                 to='/'
-                icon={<HomeOutlinedIcon />}
+                icon={<HomeIcon />}
                 selected={selected}
                 setSelected={setSelected}
+                collapsed={collapsed}
               />
             </Box>
           </Menu>
@@ -139,13 +145,16 @@ const Sidebar = () => {
           <Menu iconShape='square'>
             <MenuItem
               active={selected === 'Logout'}
-              style={{
-                color: colors.grey[100],
-              }}
               onClick={() => dispatch(logout())}
-              icon={<LogoutOutlinedIcon />}
+              icon={
+                <LogoutOutlinedIcon
+                  sx={{
+                    color: 'black',
+                  }}
+                />
+              }
             >
-              <Typography>{'Logout'}</Typography>
+              <Typography color={'black'}>{'Logout'}</Typography>
             </MenuItem>
           </Menu>
         </SidebarFooter>
