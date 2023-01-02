@@ -7,9 +7,10 @@ import {
   SidebarFooter,
 } from 'react-pro-sidebar'
 import { Box, IconButton, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import 'react-pro-sidebar/dist/css/styles.css'
 import HomeIcon from '@mui/icons-material/Home'
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import { useDispatch } from 'react-redux'
@@ -23,7 +24,11 @@ const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
     <MenuItem
       active={selected === title}
       style={{
-        color: collapsed ? colors.iconColor : 'black',
+        color: collapsed
+          ? selected === title
+            ? colors.iconColor
+            : 'black'
+          : 'black',
         backgroundColor: collapsed
           ? undefined
           : selected === title
@@ -35,7 +40,7 @@ const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
       onClick={() => setSelected(title)}
       icon={icon}
     >
-      <Typography>{title}</Typography>
+      <Typography>{title.toUpperCase()}</Typography>
       <Link to={to} />
     </MenuItem>
   )
@@ -43,9 +48,10 @@ const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
 
 const Sidebar = () => {
   const department = useSelector((state) => state.auth.department)
+  const currentLoc = useLocation().pathname.split('/')[1]
 
   const [collapsed, setCollapsed] = useState(false)
-  const [selected, setSelected] = useState('Dashboard')
+  const [selected, setSelected] = useState(currentLoc)
 
   const dispatch = useDispatch()
 
@@ -67,7 +73,6 @@ const Sidebar = () => {
       <ProSidebar collapsed={collapsed}>
         <SidebarContent>
           <Menu iconShape='square'>
-            {/* LOGO AND MENU ICON */}
             <MenuItem
               onClick={() => setCollapsed(!collapsed)}
               icon={collapsed ? <MenuOutlinedIcon /> : undefined}
@@ -131,9 +136,24 @@ const Sidebar = () => {
               marginTop={1}
             >
               <Item
-                title='Dashboard'
+                title='dashboard'
                 to='/'
                 icon={<HomeIcon />}
+                selected={selected}
+                setSelected={setSelected}
+                collapsed={collapsed}
+              />
+            </Box>
+
+            <Box
+              paddingLeft={collapsed ? undefined : '10%'}
+              marginRight={2}
+              marginTop={1}
+            >
+              <Item
+                title='profile'
+                to='/profile'
+                icon={<ManageAccountsIcon />}
                 selected={selected}
                 setSelected={setSelected}
                 collapsed={collapsed}

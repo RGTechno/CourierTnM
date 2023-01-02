@@ -15,5 +15,6 @@ route.get(
   authorize,
   DepartmentController.getDepartmentProfile
 )
+route.patch("/updateDepartmentInfo",authorize,DepartmentController.updateDepartmentProfile)
 
 module.exports = route

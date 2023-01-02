@@ -1,16 +1,15 @@
 import Auth from './components/Auth/Auth'
 import { useSelector } from 'react-redux'
+import { Route, Routes } from 'react-router-dom'
+import Sidebar from './components/Sidebar'
 import Dashboard from './components/Dashboard'
-import { BrowserRouter } from 'react-router-dom'
+import Profile from './components/Profile'
+import Main from './components/Main'
 
 function App() {
-  const auth = useSelector((state) => state.auth)
+  const state = useSelector((state) => state)
 
-  return (
-    <BrowserRouter>
-      {auth.accessToken === null ? <Auth /> : <Dashboard />}
-    </BrowserRouter>
-  )
+  return <>{state.auth.accessToken == null ? <Auth /> : <Main />}</>
 }
 
 export default App

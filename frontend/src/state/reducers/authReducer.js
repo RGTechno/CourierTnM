@@ -79,6 +79,13 @@ const authReducer = (state = initState, action) => {
         error: action.payload,
         department: null,
       }
+    case 'PROFILE_UPDATE_SUCCESS':
+      return {
+        ...state,
+        error: null,
+        department: action.payload,
+      }
+
     case 'LOGOUT':
       return {
         ...state,

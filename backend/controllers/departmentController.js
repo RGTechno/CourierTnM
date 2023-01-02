@@ -144,8 +144,39 @@ async function getDepartmentProfile(req, res) {
   }
 }
 
+/*
+@ method: patch
+@ desc: update profile of courier agency
+@ access: private
+*/
+async function updateDepartmentProfile(req, res) {
+  try {
+    const departmentId = req.department._id
+    const department = await Department.findByIdAndUpdate(
+      departmentId,
+      req.body
+    ).select('-password')
+    if (department) {
+      return res.status(200).json({
+        status: 'success',
+        message: 'updated successfully',
+        data: department,
+      })
+    }
+
+    return res.status(404).json({
+      status: 'failure',
+      message: 'Department not found',
+      data: {},
+    })
+  } catch (error) {
+    return new Error(error.message)
+  }
+}
+
 module.exports = {
   addDepartment,
   loginDepartment,
   getDepartmentProfile,
+  updateDepartmentProfile,
 }
