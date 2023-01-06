@@ -46,6 +46,7 @@ const authReducer = (state = initState, action) => {
         ...state,
         accessToken: action.payload,
         error: null,
+        department: null,
       }
 
     case 'REGISTER_FAILURE':

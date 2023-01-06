@@ -7,7 +7,7 @@ import {
   SidebarFooter,
 } from 'react-pro-sidebar'
 import { Box, IconButton, Typography } from '@mui/material'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import 'react-pro-sidebar/dist/css/styles.css'
 import HomeIcon from '@mui/icons-material/Home'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'

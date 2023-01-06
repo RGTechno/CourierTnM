@@ -98,7 +98,7 @@ export const register = (details) => {
               theme: 'light',
             })
           })
-        } else if (response.status === 200) {
+        } else if (response.status === 201) {
           response.json().then((res) => {
             dispatch({
               type: 'REGISTER_SUCCESS',
