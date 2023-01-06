@@ -197,12 +197,22 @@ export const getDepartmentInfo = (accessToken) => {
 }
 
 export const updateDepartmentInfo = (accessToken, details) => {
-  console.log(details)
+  console.log(typeof details)
   return (dispatch) => {
     const url = '/api/updateDepartmentInfo'
     fetch(url, {
-      method: 'get',
-      body: JSON.stringify(details),
+      method: 'PATCH',
+      body: JSON.stringify({
+        name: details.name,
+        country: details.country,
+        pinCode: details.pinCode,
+        state: details.state,
+        city: details.city,
+        password: details.password,
+        contactNumber: details.contactNumber,
+        contactEmail: details.contactEmail,
+        location: details.location,
+      }),
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,

@@ -70,6 +70,7 @@ const Profile = () => {
                 fullWidth
                 variant='filled'
                 type='text'
+                disabled={true}
                 label='Registration Number'
                 onBlur={handleBlur}
                 onChange={handleChange}

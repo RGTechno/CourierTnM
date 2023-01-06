@@ -152,15 +152,20 @@ async function getDepartmentProfile(req, res) {
 async function updateDepartmentProfile(req, res) {
   try {
     const departmentId = req.department._id
-    const department = await Department.findByIdAndUpdate(
+    const currentDepartment = await Department.findByIdAndUpdate(
       departmentId,
       req.body
+    )
+
+    const updatedDepartment = await Department.findById(
+      currentDepartment._id
     ).select('-password')
-    if (department) {
+
+    if (updatedDepartment) {
       return res.status(200).json({
         status: 'success',
         message: 'updated successfully',
-        data: department,
+        data: updatedDepartment,
       })
     }
 
