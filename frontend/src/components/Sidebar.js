@@ -48,10 +48,9 @@ const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
 
 const Sidebar = () => {
   const department = useSelector((state) => state.auth.department)
-  const currentLoc = useLocation().pathname.split('/')[1]
 
   const [collapsed, setCollapsed] = useState(false)
-  const [selected, setSelected] = useState(currentLoc)
+  const [selected, setSelected] = useState('dashboard')
 
   const dispatch = useDispatch()
 
@@ -137,7 +136,7 @@ const Sidebar = () => {
             >
               <Item
                 title='dashboard'
-                to='/'
+                to='/dashboard'
                 icon={<HomeIcon />}
                 selected={selected}
                 setSelected={setSelected}

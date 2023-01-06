@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getDepartmentInfo } from '../state/actions/authActions'
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes } from 'react-router-dom'
 import Sidebar from './Sidebar'
 import Dashboard from './Dashboard'
 import Profile from './Profile'
@@ -23,8 +23,9 @@ function Main() {
           <Sidebar />
           <main className='content'>
             <Routes>
-              <Route exact path='/' element={<Dashboard />} />
+              <Route exact path='/dashboard' element={<Dashboard />} />
               <Route exact path='/profile' element={<Profile />} />
+              <Route path='*' element={<Navigate to='/dashboard' replace />} />
             </Routes>
           </main>
         </div>

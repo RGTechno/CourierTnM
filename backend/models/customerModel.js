@@ -1,45 +1,38 @@
 const mongoose = require('mongoose')
 
-const courierSchema = new mongoose.Schema({
-  senderName: {
+const customerSchema = new mongoose.Schema({
+  name: {
     type: String,
     required: true,
   },
-  senderAddress: {
+  phoneNumber: {
     type: String,
     required: true,
   },
-  receiverName: {
+  email: {
     type: String,
     required: true,
   },
-  receiverAddress: {
+  location: {
     type: String,
     required: true,
   },
-  receiverCity: {
+  city: {
     type: String,
     required: true,
   },
-  receiverState: {
+  state: {
     type: String,
     required: true,
   },
-  receiverPincode: {
+  pincode: {
     type: String,
     required: true,
   },
-  receiverCountry: {
-    type: String,
-    required: true,
-  },
-  tracker: {
-    type: Array,
-  },
-  status: {
+  country: {
     type: String,
     required: true,
   },
 })
 
-module.exports = mongoose.model('Courier', courierSchema) 
+module.exports = mongoose.model('Customer', customerSchema)

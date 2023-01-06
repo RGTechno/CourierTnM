@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const Department = require('../models/department')
+const Department = require('../models/departmentModel')
 const {
   encryptPassword,
   decryptPassword,
