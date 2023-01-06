@@ -2,7 +2,7 @@ import { toast } from 'react-toastify'
 
 export const login = (credential) => {
   return (dispatch) => {
-    const url = '/api/loginDepartment'
+    const url = '/api/departments/loginDepartment'
     fetch(url, {
       method: 'post',
       body: JSON.stringify({
@@ -61,7 +61,7 @@ export const login = (credential) => {
 
 export const register = (details) => {
   return (dispatch) => {
-    const url = '/api/addDepartment'
+    const url = '/api/departments/addDepartment'
     fetch(url, {
       method: 'post',
       body: JSON.stringify({
@@ -117,7 +117,7 @@ export const register = (details) => {
 
 export const getDepartmentInfo = (accessToken) => {
   return (dispatch) => {
-    const url = '/api/getDepartmentInfo'
+    const url = '/api/departments/getDepartmentInfo'
     fetch(url, {
       method: 'get',
       headers: {
@@ -199,7 +199,7 @@ export const getDepartmentInfo = (accessToken) => {
 export const updateDepartmentInfo = (accessToken, details) => {
   console.log(typeof details)
   return (dispatch) => {
-    const url = '/api/updateDepartmentInfo'
+    const url = '/api/departments/updateDepartmentInfo'
     fetch(url, {
       method: 'PATCH',
       body: JSON.stringify({

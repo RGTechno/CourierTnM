@@ -26,6 +26,10 @@ app.put('*', function (req, res, next) {
   console.log('Request was made to: ' + req.originalUrl)
   return next()
 })
+app.patch('*', function (req, res, next) {
+  console.log('Request was made to: ' + req.originalUrl)
+  return next()
+})
 
 const apis = require('./routes/api')
 app.use('/api', apis)
