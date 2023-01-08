@@ -157,9 +157,7 @@ async function getCourierById(req, res) {
 async function getTrackingDetails(req, res) {
   try {
     const courierId = req.body._id
-    const courier = await Courier.findById(courierId).populate('tracker', {
-      password: 0,
-    })
+    const courier = await Courier.findById(courierId)
 
     if (!courier) {
       return res.status(404).json({
@@ -169,10 +167,25 @@ async function getTrackingDetails(req, res) {
       })
     }
 
+    const resultCourierTracker = {}
+    for (const [dateKey, depId] of Object.entries(courier.tracker)) {
+      const departmentTracked = await Department.findById(depId).select(
+        '-password'
+      )
+      if (!departmentTracked) {
+        return res.status(404).json({
+          status: 'failure',
+          message: 'Department not found through entries',
+          data: {},
+        })
+      }
+      resultCourierTracker[dateKey] = departmentTracked
+    }
+
     return res.status(200).json({
       status: 'success',
       message: 'Courier tracked successfully',
-      data: courier.tracker,
+      data: resultCourierTracker,
     })
   } catch (error) {
     console.log(error.message)
