@@ -20,15 +20,18 @@ const courierSchema = new mongoose.Schema({
     required: true,
   },
   tracker: {
-    type: [
-      { type: mongoose.Schema.ObjectId, required: true, ref: 'Department' },
-    ],
+    type: Object,
+    of: { type: mongoose.Schema.ObjectId, required: true, ref: 'Department' },
   },
   status: {
     type: String,
     required: true,
   },
-  createdDate: {
+  updatedAt: {
+    type: Date,
+    default: Date.now(),
+  },
+  createdAt: {
     type: Date,
     default: Date.now(),
   },

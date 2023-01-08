@@ -24,5 +24,12 @@ route.patch(
 
 //------------------- COURIER APIS ------------------------------//
 route.post('/couriers/addCourier', authorize, CourierController.addCourierEntry)
+route.get('/couriers/getCouriers', authorize, CourierController.getAllCouriers)
+route.get(
+  '/couriers/getCouriers/:id',
+  authorize,
+  CourierController.getCourierById
+)
+route.post('/couriers/track', CourierController.getTrackingDetails)
 
 module.exports = route
