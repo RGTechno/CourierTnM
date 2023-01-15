@@ -6,6 +6,7 @@ import Sidebar from './Sidebar'
 import Dashboard from './views/Dashboard'
 import Profile from './views/Profile'
 import Couriers from './views/Couriers'
+import Track from './views/Track'
 
 function Main() {
   const dispatch = useDispatch()
@@ -27,6 +28,8 @@ function Main() {
               <Route exact path='/dashboard' element={<Dashboard />} />
               <Route exact path='/profile' element={<Profile />} />
               <Route exact path='/couriers' element={<Couriers />} />
+              <Route exact path='/courier/track' element={<Track />} />
+
               <Route path='*' element={<Navigate to='/dashboard' replace />} />
             </Routes>
           </main>

@@ -11,6 +11,7 @@ import { DateRangePicker } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import 'react-toastify/dist/ReactToastify.css'
+import colors from '../../colors'
 import {
   Button,
   Box,
@@ -102,13 +103,14 @@ function ColumnHeads(props) {
   }
 
   return (
-    <TableHead>
+    <TableHead sx={{ backgroundColor: colors.primary }}>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align='center'
             sortDirection={orderBy === headCell.id ? order : false}
+            sx={{ fontWeight: 'bold' }}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -251,9 +253,9 @@ const Couriers = () => {
   }
 
   return (
-    <Box m='20px'>
+    <Box mx='20px' my='10px'>
       {/* Nav Bar for functionalities */}
-      <Box mb='5px' sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box mb='10px' sx={{ display: 'flex', alignItems: 'center' }}>
         <Box
           sx={{ display: 'flex', justifyContent: 'space-evenly', flexGrow: 1 }}
         >

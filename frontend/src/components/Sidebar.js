@@ -14,6 +14,7 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
+import ShareLocationOutlinedIcon from '@mui/icons-material/ShareLocationOutlined'
 import { useDispatch } from 'react-redux'
 import { logout } from '../state/actions/authActions'
 import colors from '../colors'
@@ -172,6 +173,20 @@ const Sidebar = () => {
                 title='couriers'
                 to='/couriers'
                 icon={<LocalShippingOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+                collapsed={collapsed}
+              />
+            </Box>
+            <Box
+              paddingLeft={collapsed ? undefined : '10%'}
+              marginRight={2}
+              marginTop={1}
+            >
+              <Item
+                title='track'
+                to='/courier/track'
+                icon={<ShareLocationOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
                 collapsed={collapsed}

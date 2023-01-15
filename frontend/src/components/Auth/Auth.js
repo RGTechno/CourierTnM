@@ -7,6 +7,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Box, Grid } from '@mui/material'
 import { Navigate, Route, Routes } from 'react-router-dom'
+import Track from '../views/Track'
 
 const Auth = () => {
   const auth = useSelector((state) => state.auth)
@@ -41,6 +42,8 @@ const Auth = () => {
             </Grid>
           }
         ></Route>
+        <Route exact path='/courier/track' element={<Track />} />
+
         <Route path='*' element={<Navigate to='/auth' replace />} />
       </Routes>
     </div>
