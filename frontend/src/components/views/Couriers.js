@@ -4,6 +4,7 @@ import { getAllCouriers } from '../../state/actions/courierActions'
 import NewCourierModal from '../NewCourierModal'
 import Moment from 'react-moment'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { visuallyHidden } from '@mui/utils'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -19,6 +20,8 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
+  TextField,
+  InputAdornment,
 } from '@mui/material'
 
 function descendingComparator(a, b, orderBy) {
@@ -161,7 +164,20 @@ const Couriers = () => {
     dispatch(getAllCouriers(state.auth.accessToken))
   }, [modalOpen])
 
-  const rows = getRowsList(state.courier.couriers)
+  const courierRowsList = getRowsList(state.courier.couriers)
+  const [rows, setRows] = useState(courierRowsList)
+
+  const refIdSearch = (event) => {
+    const searchedId = event.target.value
+    if (searchedId.length === 0) {
+      setRows(courierRowsList)
+      return
+    }
+    const newRows = courierRowsList.filter((courier) => {
+      return courier.id === searchedId
+    })
+    setRows(newRows)
+  }
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -176,8 +192,23 @@ const Couriers = () => {
   return (
     <Box m='20px'>
       {/* Nav Bar for functionalities */}
-      <Box mb='7px' sx={{ display: 'flex' }}>
-        <Box sx={{ flexGrow: 1 }}></Box>
+      <Box mb='5px' sx={{ display: 'flex' }}>
+        <Box sx={{ flexGrow: 1 }}>
+          <Box>
+            <TextField
+              label='Reference ID'
+              variant='standard'
+              onChange={refIdSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <SearchOutlinedIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
+        </Box>
         <Box>
           <Button
             variant='contained'
