@@ -7,6 +7,9 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { visuallyHidden } from '@mui/utils'
 import { ToastContainer, toast } from 'react-toastify'
+import { DateRangePicker } from 'react-date-range'
+import 'react-date-range/dist/styles.css'
+import 'react-date-range/dist/theme/default.css'
 import 'react-toastify/dist/ReactToastify.css'
 import {
   Button,
@@ -134,7 +137,9 @@ const getRowsList = (couriersList) => {
       item: courier.packageName,
       weight: courier.packageWeight,
       sender: courier.senderDetails.name,
+      senderEmail: courier.senderDetails.email,
       receiver: courier.receiverDetails.name,
+      receiverEmail: courier.receiverDetails.email,
       status: courier.departmentStatus,
       updatedDate: courier.updatedAt,
     }
@@ -179,6 +184,62 @@ const Couriers = () => {
     setRows(newRows)
   }
 
+  const emailIdSearch = (event) => {
+    const searchedEmail = event.target.value
+    if (searchedEmail.length === 0) {
+      setRows(courierRowsList)
+      return
+    }
+    const newRows = courierRowsList.filter((courier) => {
+      return (
+        courier.senderEmail === searchedEmail ||
+        courier.receiverEmail === searchedEmail
+      )
+    })
+    setRows(newRows)
+  }
+  const dateSearch = (event) => {
+    const eventId = event.target.id
+    var startDate, endDate
+    if (eventId === 'startDate') {
+      startDate = event.target.value
+    } else {
+      endDate = event.target.value
+    }
+
+    if (startDate && endDate) {
+      const newRows = courierRowsList.filter((courier) => {
+        const sDate = new Date(startDate)
+        const eDate = new Date(endDate)
+        const uDate = new Date(courier.updatedDate)
+
+        return uDate >= sDate && uDate <= eDate
+      })
+
+      setRows(newRows)
+    } else if (startDate && !endDate) {
+      const newRows = courierRowsList.filter((courier) => {
+        const sDate = new Date(startDate)
+        const uDate = new Date(courier.updatedDate)
+
+        return uDate >= sDate
+      })
+
+      setRows(newRows)
+    } else if (endDate && !startDate) {
+      const newRows = courierRowsList.filter((courier) => {
+        const eDate = new Date(endDate)
+        const uDate = new Date(courier.updatedDate)
+
+        return uDate <= eDate
+      })
+
+      setRows(newRows)
+    } else {
+      setRows(courierRowsList)
+    }
+  }
+
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
@@ -192,8 +253,10 @@ const Couriers = () => {
   return (
     <Box m='20px'>
       {/* Nav Bar for functionalities */}
-      <Box mb='5px' sx={{ display: 'flex' }}>
-        <Box sx={{ flexGrow: 1 }}>
+      <Box mb='5px' sx={{ display: 'flex', alignItems: 'center' }}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'space-evenly', flexGrow: 1 }}
+        >
           <Box>
             <TextField
               label='Reference ID'
@@ -206,6 +269,40 @@ const Couriers = () => {
                   </InputAdornment>
                 ),
               }}
+            />
+          </Box>
+          <Box>
+            <TextField
+              label='Email'
+              variant='standard'
+              onChange={emailIdSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position='start'>
+                    <SearchOutlinedIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Box>
+          <Box>
+            <TextField
+              id='startDate'
+              label='Start Date'
+              type='date'
+              variant='standard'
+              onChange={dateSearch}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Box>
+          <Box>
+            <TextField
+              id='endDate'
+              label='End Date'
+              type='date'
+              variant='standard'
+              onChange={dateSearch}
+              InputLabelProps={{ shrink: true }}
             />
           </Box>
         </Box>
