@@ -23,6 +23,10 @@ const courierSchema = new mongoose.Schema({
     type: Object,
     of: { type: mongoose.Schema.ObjectId, required: true, ref: 'Department' },
   },
+  departmentStatus: {
+    type: String,
+    required: true,  // accepted, out of delivery, in-transit, unsuccessful, delivered
+  },
   status: {
     type: String,
     required: true,

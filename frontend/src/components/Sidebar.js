@@ -7,11 +7,12 @@ import {
   SidebarFooter,
 } from 'react-pro-sidebar'
 import { Box, IconButton, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import 'react-pro-sidebar/dist/css/styles.css'
 import HomeIcon from '@mui/icons-material/Home'
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined'
+import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import { useDispatch } from 'react-redux'
 import { logout } from '../state/actions/authActions'
@@ -48,9 +49,12 @@ const Item = ({ title, to, icon, selected, setSelected, collapsed }) => {
 
 const Sidebar = () => {
   const department = useSelector((state) => state.auth.department)
+  const currentLoc = useLocation().pathname.split('/')[1]
 
   const [collapsed, setCollapsed] = useState(false)
-  const [selected, setSelected] = useState('dashboard')
+  const [selected, setSelected] = useState(
+    currentLoc == 'auth' ? 'dashboard' : currentLoc
+  )
 
   const dispatch = useDispatch()
 
@@ -153,6 +157,21 @@ const Sidebar = () => {
                 title='profile'
                 to='/profile'
                 icon={<ManageAccountsIcon />}
+                selected={selected}
+                setSelected={setSelected}
+                collapsed={collapsed}
+              />
+            </Box>
+
+            <Box
+              paddingLeft={collapsed ? undefined : '10%'}
+              marginRight={2}
+              marginTop={1}
+            >
+              <Item
+                title='couriers'
+                to='/couriers'
+                icon={<LocalShippingOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
                 collapsed={collapsed}

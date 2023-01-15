@@ -34,6 +34,7 @@ async function addCourierEntry(req, res) {
       const courier = await Courier.findByIdAndUpdate(courierDetails._id, {
         tracker: existingCourier.tracker,
         status: midStatus,
+        departmentStatus: 'Accepted',
         updatedAt: Date.now(),
       })
 
@@ -44,17 +45,16 @@ async function addCourierEntry(req, res) {
       })
     } else {
       // brand new courier no receiver/sender details yet so create one from req
-
-      const sender = req.body.senderDetails
-      const senderDetails = await Customer.findOne({
+      var sender = req.body.senderDetails
+      var senderDetails = await Customer.findOne({
         email: sender.email,
       })
       if (!senderDetails) {
         senderDetails = await new Customer(sender).save()
       }
 
-      const receiver = req.body.receiverDetails
-      const receiverDetails = await Customer.findOne({
+      var receiver = req.body.receiverDetails
+      var receiverDetails = await Customer.findOne({
         email: receiver.email,
       })
       if (!receiverDetails) {
@@ -73,6 +73,7 @@ async function addCourierEntry(req, res) {
         packageName: courierDetails.packageName,
         packageWeight: courierDetails.packageWeight,
         status: initialStatus,
+        departmentStatus: 'Accepted',
         tracker: initialTracker,
       }).save()
 
@@ -83,7 +84,7 @@ async function addCourierEntry(req, res) {
       })
     }
   } catch (error) {
-    // console.log(error.message)
+    console.log(error.message)
     return res.status(500).json({ message: 'Something went wrong !' })
   }
 }
@@ -111,7 +112,7 @@ async function getAllCouriers(req, res) {
     return res.status(200).json({
       status: 'success',
       message: 'Couriers Fetched Successful',
-      data: resultingAllDepartmentCouriers,
+      data: resultingAllDepartmentCouriers.reverse(),
     })
   } catch (error) {
     console.log(error.message)
