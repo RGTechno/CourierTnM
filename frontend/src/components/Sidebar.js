@@ -54,7 +54,7 @@ const Sidebar = () => {
 
   const [collapsed, setCollapsed] = useState(false)
   const [selected, setSelected] = useState(
-    currentLoc == 'auth' ? 'dashboard' : currentLoc
+    currentLoc === 'auth' ? 'dashboard' : currentLoc
   )
 
   const dispatch = useDispatch()
@@ -185,7 +185,7 @@ const Sidebar = () => {
             >
               <Item
                 title='track'
-                to='/courier/track'
+                to='/track/courier'
                 icon={<ShareLocationOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}

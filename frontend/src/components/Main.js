@@ -28,7 +28,7 @@ function Main() {
               <Route exact path='/dashboard' element={<Dashboard />} />
               <Route exact path='/profile' element={<Profile />} />
               <Route exact path='/couriers' element={<Couriers />} />
-              <Route exact path='/courier/track' element={<Track />} />
+              <Route exact path='/track/courier' element={<Track />} />
 
               <Route path='*' element={<Navigate to='/dashboard' replace />} />
             </Routes>

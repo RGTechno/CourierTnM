@@ -42,7 +42,7 @@ const Auth = () => {
             </Grid>
           }
         ></Route>
-        <Route exact path='/courier/track' element={<Track />} />
+        <Route exact path='/track/courier' element={<Track />} />
 
         <Route path='*' element={<Navigate to='/auth' replace />} />
       </Routes>
