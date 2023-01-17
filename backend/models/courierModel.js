@@ -24,8 +24,8 @@ const courierSchema = new mongoose.Schema({
     of: { type: mongoose.Schema.ObjectId, required: true, ref: 'Department' },
   },
   departmentStatus: {
-    type: String,
-    required: true,  // accepted, out of delivery, in-transit, unsuccessful, delivered
+    type: Object,     // {depId:status}
+    required: true,  // accepted, out of delivery, dispatched, unsuccessful, delivered
   },
   status: {
     type: String,

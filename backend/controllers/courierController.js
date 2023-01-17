@@ -1,6 +1,7 @@
 const Courier = require('../models/courierModel')
 const Department = require('../models/departmentModel')
 const Customer = require('../models/customerModel')
+const { sendEmail } = require('../utils/send_email_helper')
 
 /*
 @ method: post
@@ -16,6 +17,8 @@ async function addCourierEntry(req, res) {
 
     const courierDetails = req.body.courierDetails
     const existingCourier = await Courier.findById(courierDetails._id)
+      .populate('senderDetails')
+      .populate('receiverDetails')
     if (existingCourier) {
       // if courier exist already that means this courier department is the middle one in courier transit journey
       // change status and all etc. functionalities
@@ -31,12 +34,19 @@ async function addCourierEntry(req, res) {
 
       var getDate = Date.now().toString()
       existingCourier.tracker[getDate] = departmentId
+      existingCourier.departmentStatus[departmentId] = 'Accepted'
       const courier = await Courier.findByIdAndUpdate(courierDetails._id, {
         tracker: existingCourier.tracker,
         status: midStatus,
-        departmentStatus: 'Accepted',
+        departmentStatus: existingCourier.departmentStatus,
         updatedAt: Date.now(),
       })
+
+      await sendEmail(
+        existingCourier._id,
+        existingCourier.senderDetails.email,
+        existingCourier.receiverDetails.email
+      )
 
       return res.status(204).json({
         status: 'success',
@@ -66,6 +76,8 @@ async function addCourierEntry(req, res) {
       const trackerObject = {}
       trackerObject[getDate] = departmentId
       const initialTracker = trackerObject
+      const depStatus = {}
+      depStatus[departmentId] = 'Accepted'
 
       const courier = await new Courier({
         senderDetails: senderDetails._id,
@@ -73,9 +85,11 @@ async function addCourierEntry(req, res) {
         packageName: courierDetails.packageName,
         packageWeight: courierDetails.packageWeight,
         status: initialStatus,
-        departmentStatus: 'Accepted',
+        departmentStatus: depStatus,
         tracker: initialTracker,
       }).save()
+
+      await sendEmail(courier._id, senderDetails.email, receiverDetails.email)
 
       return res.status(201).json({
         status: 'success',
@@ -196,9 +210,53 @@ async function getTrackingDetails(req, res) {
   }
 }
 
+/*
+@ method: post
+@ desc: update a courier detail
+@ access: private
+*/
+async function updateCourierEntry(req, res) {
+  try {
+    const departmentId = req.department._id // this is the id of loggedin department who is currently making the entry of this courier to their department (can be initiator as well as middle ones)
+    if (!departmentId) {
+      return res.status(403).json({
+        status: 'failure',
+        message: 'Unauthorized',
+        data: {},
+      })
+    }
+    const courierDetails = req.body.courierDetails
+    const courier = await Courier.findById(courierDetails._id)
+    if (!courier) {
+      return res.status(404).json({
+        status: 'failure',
+        message: 'Courier not found',
+        data: {},
+      })
+    } else {
+      courier.departmentStatus[departmentId] = courierDetails.status
+      await Courier.findByIdAndUpdate(courierDetails._id, {
+        packageName: courierDetails.item,
+        packageWeight: courierDetails.weight,
+        departmentStatus: courier.departmentStatus,
+      })
+
+      return res.status(204).json({
+        status: 'success',
+        message: 'Courier Update Successful',
+        data: {},
+      })
+    }
+  } catch (error) {
+    console.log(error.message)
+    return res.status(500).json({ message: 'Something went wrong !' })
+  }
+}
+
 module.exports = {
   addCourierEntry,
   getAllCouriers,
   getCourierById,
   getTrackingDetails,
+  updateCourierEntry,
 }

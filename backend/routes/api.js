@@ -31,5 +31,10 @@ route.get(
   CourierController.getCourierById
 )
 route.post('/couriers/track', CourierController.getTrackingDetails)
+route.patch(
+  '/couriers/updateCourier',
+  authorize,
+  CourierController.updateCourierEntry
+)
 
 module.exports = route

@@ -26,6 +26,7 @@ import {
   TextField,
   InputAdornment,
 } from '@mui/material'
+import CourierDetailModal from '../CourierDetailModal'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -107,7 +108,6 @@ function ColumnHeads(props) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align='center'
             sortDirection={orderBy === headCell.id ? order : false}
             sx={{ fontWeight: 'bold' }}
           >
@@ -137,10 +137,8 @@ const getRowsList = (couriersList) => {
       id: courier._id,
       item: courier.packageName,
       weight: courier.packageWeight,
-      sender: courier.senderDetails.name,
-      senderEmail: courier.senderDetails.email,
-      receiver: courier.receiverDetails.name,
-      receiverEmail: courier.receiverDetails.email,
+      sender: courier.senderDetails,
+      receiver: courier.receiverDetails,
       status: courier.departmentStatus,
       updatedDate: courier.updatedAt,
     }
@@ -159,19 +157,28 @@ const Couriers = () => {
   const [page, setPage] = useState(0)
   const [rowsPerPage, setRowsPerPage] = useState(10)
 
-  const [modalOpen, setModalOpen] = React.useState(false)
-  const handleModalOpen = () => setModalOpen(true)
-  const handleModalClose = () => {
-    setModalOpen(false)
-    // window.location.reload()
+  const [newCourierModalOpen, setNewCourierModalOpen] = useState(false)
+  const handleNewCourierModalOpen = () => setNewCourierModalOpen(true)
+  const handleNewCourierModalClose = () => {
+    setNewCourierModalOpen(false)
   }
+
+  const [courierDetailModalOpen, setCourierDetailModalOpen] = useState(false)
+  const handleCourierDetailModalOpen = () => setCourierDetailModalOpen(true)
+  const handleCourierDetailModalClose = () => {
+    setCourierDetailModalOpen(false)
+  }
+
+  const [singleClickedCourierData, setSingleClickedCourierData] = useState()
 
   useEffect(() => {
     dispatch(getAllCouriers(state.auth.accessToken))
-  }, [modalOpen])
+  }, [newCourierModalOpen, courierDetailModalOpen])
 
   const courierRowsList = getRowsList(state.courier.couriers)
   const [rows, setRows] = useState(courierRowsList)
+
+  console.log(rows)
 
   const refIdSearch = (event) => {
     const searchedId = event.target.value
@@ -193,8 +200,8 @@ const Couriers = () => {
     }
     const newRows = courierRowsList.filter((courier) => {
       return (
-        courier.senderEmail === searchedEmail ||
-        courier.receiverEmail === searchedEmail
+        courier.sender.email === searchedEmail ||
+        courier.receiver.email === searchedEmail
       )
     })
     setRows(newRows)
@@ -316,13 +323,13 @@ const Couriers = () => {
               backgroundColor: 'black',
               borderRadius: '20px',
             }}
-            onClick={handleModalOpen}
+            onClick={handleNewCourierModalOpen}
           >
             Add New
           </Button>
           <NewCourierModal
-            modalOpen={modalOpen}
-            handleModalClose={handleModalClose}
+            modalOpen={newCourierModalOpen}
+            handleModalClose={handleNewCourierModalClose}
           />
         </Box>
       </Box>
@@ -342,14 +349,23 @@ const Couriers = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow hover key={row.id}>
-                      <TableCell align='center'>{row.id}</TableCell>
-                      <TableCell align='center'>{row.item}</TableCell>
-                      <TableCell align='center'>{row.weight}</TableCell>
-                      <TableCell align='center'>{row.sender}</TableCell>
-                      <TableCell align='center'>{row.receiver}</TableCell>
-                      <TableCell align='center'>{row.status}</TableCell>
-                      <TableCell align='center'>
+                    <TableRow
+                      hover
+                      key={row.id}
+                      onClick={() => {
+                        handleCourierDetailModalOpen()
+                        setSingleClickedCourierData(row)
+                      }}
+                    >
+                      <TableCell>{row.id}</TableCell>
+                      <TableCell>{row.item}</TableCell>
+                      <TableCell>{row.weight}</TableCell>
+                      <TableCell>{row.sender.name}</TableCell>
+                      <TableCell>{row.receiver.name}</TableCell>
+                      <TableCell>
+                        {row.status[`${state.auth.department._id}`]}
+                      </TableCell>
+                      <TableCell>
                         <Moment format='DD/MM/YYYY hh:mm a'>
                           {row.updatedDate}
                         </Moment>
@@ -369,7 +385,13 @@ const Couriers = () => {
           onPageChange={handleChangePage}
         />
       </Paper>
+
       <ToastContainer />
+      <CourierDetailModal
+        modalOpen={courierDetailModalOpen}
+        handleModalClose={handleCourierDetailModalClose}
+        data={singleClickedCourierData}
+      />
     </Box>
   )
 }
