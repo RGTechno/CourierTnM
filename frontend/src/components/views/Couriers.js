@@ -5,8 +5,11 @@ import NewCourierModal from '../NewCourierModal'
 import Moment from 'react-moment'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined'
 import { visuallyHidden } from '@mui/utils'
 import { ToastContainer } from 'react-toastify'
+import pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import 'react-toastify/dist/ReactToastify.css'
@@ -25,6 +28,7 @@ import {
   TableSortLabel,
   TextField,
   InputAdornment,
+  IconButton,
 } from '@mui/material'
 import CourierDetailModal from '../CourierDetailModal'
 
@@ -63,7 +67,7 @@ const headCells = [
   },
   {
     id: 'item',
-    label: 'Package Description',
+    label: 'Description',
   },
   {
     id: 'weight',
@@ -86,6 +90,10 @@ const headCells = [
   {
     id: 'updatedDate',
     label: 'Updated Date',
+  },
+  {
+    id: 'slip',
+    label: 'Courier Slip',
   },
 ]
 
@@ -147,7 +155,64 @@ const getRowsList = (couriersList) => {
   return rowsList
 }
 
+const createPdf = (data) => {
+  const pdfGenerator = pdfMake.createPdf({
+    pageSize: 'A7',
+    header: [
+      {
+        text: 'Courier TnM',
+        margin: 5,
+        fontSize: '10',
+        bold: true,
+        alignment: 'center',
+      },
+    ],
+    content: [
+      {
+        text: 'Receiver Details',
+        fontSize: '7',
+        bold: true,
+        decoration: 'underline',
+      },
+      {
+        text: `Name: ${data.receiver.name}\nPhone: ${data.receiver.phoneNumber}\nEmail: ${data.receiver.email}\nAddress: ${data.receiver.location}, ${data.receiver.city}, ${data.receiver.state}, ${data.receiver.country}, ${data.receiver.pincode}`,
+        fontSize: '5',
+        marginTop: 2,
+      },
+      {
+        text: 'Sender Details',
+        fontSize: '7',
+        bold: true,
+        decoration: 'underline',
+        marginTop: 5,
+      },
+      {
+        text: `Name: ${data.sender.name}\nPhone: ${data.sender.phoneNumber}\nEmail: ${data.sender.email}\nAddress: ${data.sender.location}, ${data.sender.city}, ${data.sender.state}, ${data.sender.country}, ${data.sender.pincode}`,
+        fontSize: '5',
+        marginTop: 2,
+      },
+      {
+        text: 'Package Details',
+        fontSize: '7',
+        bold: true,
+        decoration: 'underline',
+        marginTop: 5,
+      },
+      {
+        text: `Reference ID: ${data.id}\nItem Description: ${data.item}\nWeight: ${data.weight}`,
+        fontSize: '5',
+        bold: true,
+        marginTop: 5,
+      },
+    ],
+  })
+  var win = window.open('', '_blank')
+  pdfGenerator.print({}, win)
+}
+
 const Couriers = () => {
+  pdfMake.vfs = pdfFonts.pdfMake.vfs
+
   const state = useSelector((state) => state)
   const dispatch = useDispatch()
 
@@ -349,15 +414,16 @@ const Couriers = () => {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   return (
-                    <TableRow
-                      hover
-                      key={row.id}
-                      onClick={() => {
-                        handleCourierDetailModalOpen()
-                        setSingleClickedCourierData(row)
-                      }}
-                    >
-                      <TableCell>{row.id}</TableCell>
+                    <TableRow hover key={row.id}>
+                      <TableCell
+                        sx={{ textDecoration: 'underline', cursor: 'pointer' }}
+                        onClick={() => {
+                          handleCourierDetailModalOpen()
+                          setSingleClickedCourierData(row)
+                        }}
+                      >
+                        {row.id}
+                      </TableCell>
                       <TableCell>{row.item}</TableCell>
                       <TableCell>{row.weight}</TableCell>
                       <TableCell>{row.sender.name}</TableCell>
@@ -369,6 +435,11 @@ const Couriers = () => {
                         <Moment format='DD/MM/YYYY hh:mm a'>
                           {row.updatedDate}
                         </Moment>
+                      </TableCell>
+                      <TableCell>
+                        <IconButton onClick={() => createPdf(row)}>
+                          <DescriptionOutlinedIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
                   )

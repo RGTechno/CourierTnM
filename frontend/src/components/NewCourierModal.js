@@ -3,6 +3,8 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import pdfMake from 'pdfmake/build/pdfmake'
+import pdfFonts from 'pdfmake/build/vfs_fonts'
 import {
   Button,
   Dialog,
@@ -43,11 +45,68 @@ function additionalTabWiseAttributes(index) {
 }
 
 const NewCourierModal = (props) => {
+  pdfMake.vfs = pdfFonts.pdfMake.vfs
+
   const accessToken = useSelector((state) => state.auth.accessToken)
   const [value, setValue] = useState(0)
 
   const handleTabChange = (event, newValue) => {
     setValue(newValue)
+  }
+
+  const createPdf = (data, refId) => {
+    const pdfGenerator = pdfMake.createPdf({
+      pageSize: 'A7',
+      header: [
+        {
+          text: 'Courier TnM',
+          margin: 5,
+          fontSize: '10',
+          bold: true,
+          alignment: 'center',
+        },
+      ],
+      content: [
+        {
+          text: 'Receiver Details',
+          fontSize: '7',
+          bold: true,
+          decoration: 'underline',
+        },
+        {
+          text: `Name: ${data.receiverDetails.name}\nPhone: ${data.receiverDetails.phoneNumber}\nEmail: ${data.receiverDetails.email}\nAddress: ${data.receiverDetails.location}, ${data.receiverDetails.city}, ${data.receiverDetails.state}, ${data.receiverDetails.country}, ${data.receiverDetails.pincode}`,
+          fontSize: '5',
+          marginTop: 2,
+        },
+        {
+          text: 'Sender Details',
+          fontSize: '7',
+          bold: true,
+          decoration: 'underline',
+          marginTop: 5,
+        },
+        {
+          text: `Name: ${data.senderDetails.name}\nPhone: ${data.senderDetails.phoneNumber}\nEmail: ${data.senderDetails.email}\nAddress: ${data.senderDetails.location}, ${data.senderDetails.city}, ${data.senderDetails.state}, ${data.senderDetails.country}, ${data.senderDetails.pincode}`,
+          fontSize: '5',
+          marginTop: 2,
+        },
+        {
+          text: 'Package Details',
+          fontSize: '7',
+          bold: true,
+          decoration: 'underline',
+          marginTop: 5,
+        },
+        {
+          text: `Reference ID: ${refId}\nItem Description: ${data.courierDetails.packageName}\nWeight: ${data.courierDetails.packageWeight}`,
+          fontSize: '5',
+          bold: true,
+          marginTop: 5,
+        },
+      ],
+    })
+    var win = window.open('', '_blank')
+    pdfGenerator.print({}, win)
   }
 
   const handleNewCourierFormSubmit = async (formData) => {
@@ -89,6 +148,8 @@ const NewCourierModal = (props) => {
       })
 
       const courierEntryResponse = await response.json()
+
+      createPdf(data, courierEntryResponse.data._id)
 
       response.status === 204 || response.status === 201
         ? toast.success('Entry Successful', {

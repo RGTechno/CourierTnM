@@ -3,10 +3,13 @@ import { Box, IconButton, TextField } from '@mui/material'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { ToastContainer, toast } from 'react-toastify'
 import TrackingRep from '../TrackingRep'
+import { useSelector } from 'react-redux'
 
 const Track = () => {
   const [refId, setRefId] = useState()
   const [tracker, setTracker] = useState()
+
+  const token = useSelector((state) => state.auth.accessToken)
 
   const trackCourier = async () => {
     if (!refId || refId.trim().length === 0) {
@@ -56,11 +59,13 @@ const Track = () => {
     <Box m='20px'>
       <Box display={'flex'} justifyContent='space-evenly' alignItems={'center'}>
         <Box mr='10px'>
-          <img
-            src='https://i.ibb.co/1QCW6Md/Courier-Tn-M.png'
-            alt='Courier-Tn-M'
-            height={75}
-          />
+          {!token && (
+            <img
+              src='https://i.ibb.co/svJ55Td/Courier-Tn-M-removebg-preview.png'
+              alt='Courier-Tn-M'
+              height={75}
+            />
+          )}
         </Box>
         <TextField
           required
