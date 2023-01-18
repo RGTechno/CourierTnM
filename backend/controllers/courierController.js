@@ -44,7 +44,6 @@ async function addCourierEntry(req, res) {
 
       await sendEmail(
         existingCourier._id,
-        existingCourier.senderDetails.email,
         existingCourier.receiverDetails.email
       )
 
@@ -63,12 +62,48 @@ async function addCourierEntry(req, res) {
         senderDetails = await new Customer(sender).save()
       }
 
+      const sd = senderDetails.toObject()
+      delete sd._id
+      delete sd.__v
+
+      if (
+        !(
+          Object.entries(sender).sort().toString() ===
+          Object.entries(sd).sort().toString()
+        )
+      ) {
+        return res.status(400).json({
+          status: 'failure',
+          message:
+            'Return Customer - Sender details does not match with the email associated',
+          data: {},
+        })
+      }
+
       var receiver = req.body.receiverDetails
       var receiverDetails = await Customer.findOne({
         email: receiver.email,
       })
       if (!receiverDetails) {
-        receiverDetails = await new Customer(sender).save()
+        receiverDetails = await new Customer(receiver).save()
+      }
+
+      const rd = receiverDetails.toObject()
+      delete rd._id
+      delete rd.__v
+
+      if (
+        !(
+          Object.entries(receiver).sort().toString() ===
+          Object.entries(rd).sort().toString()
+        )
+      ) {
+        return res.status(400).json({
+          status: 'failure',
+          message:
+            'Return Customer - Receiver details does not match with the email associated',
+          data: {},
+        })
       }
 
       const initialStatus = `Packed at ${department.name}, ${department.location}, ${department.city}`
@@ -89,7 +124,7 @@ async function addCourierEntry(req, res) {
         tracker: initialTracker,
       }).save()
 
-      await sendEmail(courier._id, senderDetails.email, receiverDetails.email)
+      await sendEmail(courier._id, receiverDetails.email)
 
       return res.status(201).json({
         status: 'success',
