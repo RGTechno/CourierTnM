@@ -2,7 +2,11 @@ const express = require('express')
 const route = express.Router()
 const DepartmentController = require('../controllers/departmentController')
 const CourierController = require('../controllers/courierController')
-const { authorize } = require('../middleware/authorizationMiddleware')
+const DeliveryAgentController = require('../controllers/deliveryAgentController')
+const {
+  authorize,
+  authorizeDeliveryAgent,
+} = require('../middleware/authorizationMiddleware')
 
 route.get('/', (req, res) => {
   res.send('/api working')
@@ -35,6 +39,22 @@ route.patch(
   '/couriers/updateCourier',
   authorize,
   CourierController.updateCourierEntry
+)
+
+//----------------- DELIVERY AGENT APIS -------------------------//
+route.post(
+  '/deliveryAgents/loginDeliveryAgent',
+  DeliveryAgentController.loginDeliveryAgent
+)
+route.post(
+  '/deliveryAgents/addEntry',
+  authorizeDeliveryAgent,
+  DeliveryAgentController.addEntryDeliveryAgent
+)
+route.post(
+  '/deliveryAgents/markCourierAsDelivered',
+  authorizeDeliveryAgent,
+  DeliveryAgentController.markDeliveredByDeliveryAgent
 )
 
 module.exports = route

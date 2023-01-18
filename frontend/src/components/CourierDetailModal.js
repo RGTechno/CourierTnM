@@ -85,7 +85,6 @@ const CourierDetailModal = (props) => {
     setValue(newValue)
   }
 
-  console.log(props.data)
 
   const initValues = {
     item: props.data && props.data.item,

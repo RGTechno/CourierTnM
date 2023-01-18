@@ -197,7 +197,6 @@ export const getDepartmentInfo = (accessToken) => {
 }
 
 export const updateDepartmentInfo = (accessToken, details) => {
-  console.log(typeof details)
   return (dispatch) => {
     const url = '/api/departments/updateDepartmentInfo'
     fetch(url, {

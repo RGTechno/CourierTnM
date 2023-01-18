@@ -42,10 +42,12 @@ async function addCourierEntry(req, res) {
         updatedAt: Date.now(),
       })
 
+      /*
       await sendEmail(
         existingCourier._id,
         existingCourier.receiverDetails.email
       )
+      */
 
       return res.status(204).json({
         status: 'success',
@@ -124,7 +126,7 @@ async function addCourierEntry(req, res) {
         tracker: initialTracker,
       }).save()
 
-      await sendEmail(courier._id, receiverDetails.email)
+      // await sendEmail(courier._id, receiverDetails.email)
 
       return res.status(201).json({
         status: 'success',
