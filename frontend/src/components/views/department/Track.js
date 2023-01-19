@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Box, IconButton, TextField } from '@mui/material'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { ToastContainer, toast } from 'react-toastify'
-import TrackingRep from '../TrackingRep'
+import TrackingRep from '../../TrackingRep'
 import { useSelector } from 'react-redux'
 
 const Track = () => {

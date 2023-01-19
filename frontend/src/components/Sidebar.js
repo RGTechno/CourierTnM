@@ -14,6 +14,8 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts'
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined'
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined'
 import ShareLocationOutlinedIcon from '@mui/icons-material/ShareLocationOutlined'
+import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined'
+import DeliveryDiningOutlinedIcon from '@mui/icons-material/DeliveryDiningOutlined'
 import { useDispatch } from 'react-redux'
 import { logout } from '../state/actions/authActions'
 import colors from '../colors'
@@ -41,10 +43,15 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 
 const Sidebar = () => {
   const department = useSelector((state) => state.auth.department)
+  const deliveryAgent = useSelector((state) => state.auth.deliveryAgent)
   const currentLoc = useLocation().pathname.split('/')[1]
 
   const [selected, setSelected] = useState(
-    currentLoc === 'auth' ? 'dashboard' : currentLoc
+    currentLoc === 'auth'
+      ? deliveryAgent == null
+        ? 'dashboard'
+        : 'pickup'
+      : currentLoc
   )
 
   const dispatch = useDispatch()
@@ -94,67 +101,84 @@ const Sidebar = () => {
             </MenuItem>
 
             <Box mb='25px'>
-              <Box display='flex' justifyContent='center' alignItems='center'>
-                <img
-                  alt='profile-user'
-                  width='100px'
-                  height='100px'
-                  src={`https://media.istockphoto.com/id/1131164548/vector/avatar-5.jpg?b=1&s=612x612&w=0&k=20&c=2IYaKietQSwuKorT6F4aCPhSm8pJp8gT9hElgF9KxzQ=`}
-                  style={{ cursor: 'pointer', borderRadius: '50%' }}
-                />
-              </Box>
               <Box textAlign='center'>
                 <Typography
                   variant='h5'
                   fontWeight='bold'
                   sx={{ m: '10px 0 0 0', color: 'black' }}
                 >
-                  {department.name}
+                  {deliveryAgent ? deliveryAgent.name : department.name}
                 </Typography>
                 <Typography>
-                  Registration Number #{department.registrationNumber}
+                  {deliveryAgent
+                    ? `Phone Number # ${deliveryAgent.phoneNumber}`
+                    : `Registration Number # ${department.registrationNumber}`}
                 </Typography>
               </Box>
             </Box>
+            {deliveryAgent ? (
+              <Box>
+                <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
+                  <Item
+                    title='pickup'
+                    to='/pickup'
+                    icon={<AppRegistrationOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </Box>
+                <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
+                  <Item
+                    title='deliver'
+                    to='/deliver'
+                    icon={<DeliveryDiningOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </Box>
+              </Box>
+            ) : (
+              <Box>
+                <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
+                  <Item
+                    title='dashboard'
+                    to='/dashboard'
+                    icon={<HomeIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </Box>
 
-            <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
-              <Item
-                title='dashboard'
-                to='/dashboard'
-                icon={<HomeIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </Box>
+                <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
+                  <Item
+                    title='profile'
+                    to='/profile'
+                    icon={<ManageAccountsIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </Box>
 
-            <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
-              <Item
-                title='profile'
-                to='/profile'
-                icon={<ManageAccountsIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </Box>
-
-            <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
-              <Item
-                title='couriers'
-                to='/couriers'
-                icon={<LocalShippingOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </Box>
-            <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
-              <Item
-                title='track'
-                to='/track/courier'
-                icon={<ShareLocationOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </Box>
+                <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
+                  <Item
+                    title='couriers'
+                    to='/couriers'
+                    icon={<LocalShippingOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </Box>
+                <Box paddingLeft={'10%'} marginRight={2} marginTop={1}>
+                  <Item
+                    title='track'
+                    to='/track/courier'
+                    icon={<ShareLocationOutlinedIcon />}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                </Box>
+              </Box>
+            )}
           </Menu>
         </SidebarContent>
         <SidebarFooter>

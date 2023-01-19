@@ -30,10 +30,12 @@ async function loginDeliveryAgent(req, res) {
     const accessToken = jwt.sign(loggedInDeliveryAgent, process.env.JWT_SECRET)
 
     if (password === deliveryAgent.password) {
+      const delAgent = deliveryAgent.toObject()
+      delete delAgent.password
       return res.status(200).json({
         status: 'success',
         message: 'Login Success',
-        data: { accessToken },
+        data: { deliveryAgent: delAgent, accessToken },
       })
     } else {
       return res.status(401).json({
@@ -119,6 +121,14 @@ async function markDeliveredByDeliveryAgent(req, res) {
         status: 'failure',
         message:
           'Courier not assigned or already assigned to different delivery agent',
+        data: {},
+      })
+    }
+
+    if (courier.deliveredDate) {
+      return res.status(400).json({
+        status: 'failure',
+        message: 'Courier already delivered',
         data: {},
       })
     }

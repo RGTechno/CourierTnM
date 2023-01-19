@@ -11,7 +11,6 @@ import Typography from '@mui/material/Typography'
 import { useDispatch } from 'react-redux'
 import { login } from '../../state/actions/authActions'
 
-
 function Login(prop) {
   const dispatch = useDispatch()
   const handleLogin = (event) => {
@@ -40,7 +39,9 @@ function Login(prop) {
         <div id='loginText' style={{ fontSize: '20pt', fontWeight: 'bold' }}>
           Hey! Welcome
         </div>
-        <div style={{color:"grey",fontSize:"10pt"}}>Login to deliver with ease</div>
+        <div style={{ color: 'grey', fontSize: '10pt' }}>
+          Login to deliver with ease
+        </div>
         <Box component='form' onSubmit={handleLogin} sx={{ mt: 1 }}>
           <TextField
             margin='normal'
@@ -77,15 +78,7 @@ function Login(prop) {
           >
             Login
           </Button>
-          <Button
-            variant='text'
-            sx={{
-              borderRadius: '20px',
-              color: 'black',
-            }}
-          >
-            Forgot Password
-          </Button>
+
           <Grid container>
             <Grid item>
               <Button

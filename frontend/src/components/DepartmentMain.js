@@ -3,12 +3,12 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getDepartmentInfo } from '../state/actions/authActions'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import Sidebar from './Sidebar'
-import Dashboard from './views/Dashboard'
-import Profile from './views/Profile'
-import Couriers from './views/Couriers'
-import Track from './views/Track'
+import Dashboard from './views/department/Dashboard'
+import Profile from './views/department/Profile'
+import Couriers from './views/department/Couriers'
+import Track from './views/department/Track'
 
-function Main() {
+function DepartmentMain() {
   const dispatch = useDispatch()
   const state = useSelector((state) => state)
 
@@ -39,4 +39,4 @@ function Main() {
   )
 }
 
-export default Main
+export default DepartmentMain

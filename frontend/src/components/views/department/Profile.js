@@ -2,7 +2,7 @@ import { Box, Button, TextField } from '@mui/material'
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateDepartmentInfo } from '../../state/actions/authActions'
+import { updateDepartmentInfo } from '../../../state/actions/authActions'
 
 const Profile = () => {
   const departmentInitialValues = useSelector((state) => state.auth.department)

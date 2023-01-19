@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { getAllCouriers } from '../../state/actions/courierActions'
-import NewCourierModal from '../NewCourierModal'
+import { getAllCouriers } from '../../../state/actions/courierActions'
+import NewCourierModal from '../../NewCourierModal'
 import Moment from 'react-moment'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
@@ -13,7 +13,7 @@ import pdfFonts from 'pdfmake/build/vfs_fonts'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import 'react-toastify/dist/ReactToastify.css'
-import colors from '../../colors'
+import colors from '../../../colors'
 import {
   Button,
   Box,
@@ -30,7 +30,7 @@ import {
   InputAdornment,
   IconButton,
 } from '@mui/material'
-import CourierDetailModal from '../CourierDetailModal'
+import CourierDetailModal from '../../CourierDetailModal'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
