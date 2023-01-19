@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 const Track = () => {
   const [refId, setRefId] = useState()
   const [tracker, setTracker] = useState()
+  const [courierDetails, setCourierDetails] = useState()
 
   const token = useSelector((state) => state.auth.accessToken)
 
@@ -38,6 +39,7 @@ const Track = () => {
       const trackingResponse = await response.json()
       if (response.status === 200) {
         setTracker(trackingResponse.data)
+        setCourierDetails(trackingResponse.courierDetails)
         return
       }
       toast.error(trackingResponse.message, {
@@ -95,7 +97,7 @@ const Track = () => {
         <div></div>
       ) : (
         <div>
-          <TrackingRep trackingData={tracker} />
+          <TrackingRep trackingData={tracker} courierDetails={courierDetails} />
         </div>
       )}
     </Box>

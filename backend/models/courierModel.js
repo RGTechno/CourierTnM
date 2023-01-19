@@ -36,6 +36,14 @@ const courierSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  pickupDate: {
+    type: Date,
+    required: false,
+  },
+  deliveredDate: {
+    type: Date,
+    required: false,
+  },
   updatedAt: {
     type: Date,
     default: Date.now(),

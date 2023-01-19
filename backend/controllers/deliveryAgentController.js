@@ -83,6 +83,7 @@ async function addEntryDeliveryAgent(req, res) {
 
     await Courier.findByIdAndUpdate(courierId, {
       deliveryAgent: deliveryAgentId,
+      pickupDate: new Date(),
     })
 
     return res.status(200).json({
@@ -124,6 +125,7 @@ async function markDeliveredByDeliveryAgent(req, res) {
 
     await Courier.findByIdAndUpdate(courierId, {
       status: 'Delivered',
+      deliveredDate: new Date(),
     })
 
     return res.status(200).json({

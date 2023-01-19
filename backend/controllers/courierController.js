@@ -174,7 +174,7 @@ async function getAllCouriers(req, res) {
 /*
 @ method: get
 @ desc: get courier by id
-@ access: private
+@ access: public
 */
 async function getCourierById(req, res) {
   try {
@@ -182,6 +182,7 @@ async function getCourierById(req, res) {
     const courier = await Courier.findById(courierId)
       .populate('senderDetails')
       .populate('receiverDetails')
+      .populate('deliveryAgent')
 
     if (!courier) {
       return res.status(404).json({
@@ -209,7 +210,7 @@ async function getCourierById(req, res) {
 async function getTrackingDetails(req, res) {
   try {
     const courierId = req.body._id
-    const courier = await Courier.findById(courierId)
+    const courier = await Courier.findById(courierId).populate('deliveryAgent')
 
     if (!courier) {
       return res.status(404).json({
@@ -238,6 +239,7 @@ async function getTrackingDetails(req, res) {
       status: 'success',
       message: 'Courier tracked successfully',
       data: resultCourierTracker,
+      courierDetails: courier,
     })
   } catch (error) {
     console.log(error.message)

@@ -243,7 +243,6 @@ const Couriers = () => {
   const courierRowsList = getRowsList(state.courier.couriers)
   const [rows, setRows] = useState(courierRowsList)
 
-
   const refIdSearch = (event) => {
     const searchedId = event.target.value
     if (searchedId.length === 0) {
