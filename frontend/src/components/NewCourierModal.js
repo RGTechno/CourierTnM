@@ -149,29 +149,30 @@ const NewCourierModal = (props) => {
 
       const courierEntryResponse = await response.json()
 
-      createPdf(data, courierEntryResponse.data._id)
-
-      response.status === 204 || response.status === 201
-        ? toast.success('Entry Successful', {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          })
-        : toast.error(courierEntryResponse.message, {
-            position: 'top-right',
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: 'light',
-          })
+      if (response.status === 204 || response.status === 201) {
+        createPdf(data, courierEntryResponse.data._id)
+        toast.success('Entry Successful', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        })
+      } else {
+        toast.error(courierEntryResponse.message, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+        })
+      }
     } catch (error) {
       console.log(error)
     }

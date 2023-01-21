@@ -1,6 +1,7 @@
 const Courier = require('../models/courierModel')
 const Department = require('../models/departmentModel')
 const Customer = require('../models/customerModel')
+const url = require('url')
 const { sendEmail } = require('../utils/send_email_helper')
 
 /*
@@ -42,12 +43,11 @@ async function addCourierEntry(req, res) {
         updatedAt: Date.now(),
       })
 
-      /*
       await sendEmail(
         existingCourier._id,
-        existingCourier.receiverDetails.email
+        existingCourier.receiverDetails.email,
+        url.parse(req.headers.referer).host
       )
-      */
 
       return res.status(204).json({
         status: 'success',
@@ -126,7 +126,11 @@ async function addCourierEntry(req, res) {
         tracker: initialTracker,
       }).save()
 
-      // await sendEmail(courier._id, receiverDetails.email)
+      await sendEmail(
+        courier._id,
+        receiverDetails.email,
+        url.parse(req.headers.referer).host
+      )
 
       return res.status(201).json({
         status: 'success',

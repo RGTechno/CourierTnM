@@ -244,23 +244,23 @@ const Dashboard = () => {
           data={[
             {
               title: 'Accepted',
-              value: (acceptedCouriers.length / couriers.length) * 100,
+              value: ((acceptedCouriers.length / couriers.length) * 100).toFixed(1),
               color: '#E38627',
             },
             {
               title: 'Dispatched',
-              value: (dispatchedCouriers.length / couriers.length) * 100,
+              value: ((dispatchedCouriers.length / couriers.length) * 100).toFixed(1),
               color: '#C13C37',
             },
             {
               title: 'Unsuccessful',
-              value: (unsuccessfulCouriers.length / couriers.length) * 100,
+              value: ((unsuccessfulCouriers.length / couriers.length) * 100).toFixed(1),
               color: '#6A2135',
             },
           ]}
           label={({ dataEntry }) => dataEntry.value + '%'}
           labelStyle={{
-            fontSize: '8px',
+            fontSize: '7px',
             fill: 'white',
             fillOpacity: '0.75',
           }}

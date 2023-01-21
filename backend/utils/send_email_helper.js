@@ -1,7 +1,7 @@
 require('dotenv').config()
 const nodemailer = require('nodemailer')
 
-async function sendEmail(refId, courierReceiverEmail) {
+async function sendEmail(refId, courierReceiverEmail, trackLoc) {
   try {
     let transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
@@ -18,7 +18,9 @@ async function sendEmail(refId, courierReceiverEmail) {
       from: '"Courier TnM" <couriertnm@gmail.com>', // sender address
       to: courierReceiverEmail, // list of receivers
       subject: 'Update in your courier via Courier TnM', // Subject line
-      text: `Courier with reference id ${refId} has an update.\nYou can track your courier using this reference id\n\nRegards`, // plain text body
+      html: `<p>Courier with reference id <b>${refId}</b> has an update.</p><p>You can track your courier through using this reference id.</p>
+      <p>Track your courier <a href='http://${trackLoc}/track/courier'>here</a></p><br /><br />
+      <p>Regard</p>`,
     })
 
     console.log('Email sent: ', info.messageId)

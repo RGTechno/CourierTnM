@@ -7,6 +7,7 @@ import Dashboard from './views/department/Dashboard'
 import Profile from './views/department/Profile'
 import Couriers from './views/department/Couriers'
 import Track from './views/department/Track'
+import { getAllCouriers } from '../state/actions/courierActions'
 
 function DepartmentMain() {
   const dispatch = useDispatch()
@@ -14,6 +15,7 @@ function DepartmentMain() {
 
   useEffect(() => {
     dispatch(getDepartmentInfo(state.auth.accessToken))
+    dispatch(getAllCouriers(state.auth.accessToken))
   }, [state.auth.accessToken])
 
   return (

@@ -30,7 +30,7 @@ const Track = () => {
       const url = '/api/couriers/track'
       const response = await fetch(url, {
         method: 'post',
-        body: JSON.stringify({ _id: refId }),
+        body: JSON.stringify({ _id: refId.trim() }),
         headers: {
           'Content-Type': 'application/json',
         },
