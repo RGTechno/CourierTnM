@@ -20,6 +20,7 @@ import {
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { useSelector } from 'react-redux'
+import { apiHost } from '../apiLoc'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -103,7 +104,7 @@ const CourierDetailModal = (props) => {
       courierDetails: { ...formData, _id: props.data.id },
     }
     try {
-      const url = '/api/couriers/updateCourier'
+      const url = `${apiHost}/api/couriers/updateCourier`
       const response = await fetch(url, {
         method: 'PATCH',
         body: JSON.stringify(data),

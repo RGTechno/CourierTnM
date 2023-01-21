@@ -3,6 +3,7 @@ import { Box, IconButton, TextField } from '@mui/material'
 import AddTaskOutlinedIcon from '@mui/icons-material/AddTaskOutlined'
 import { ToastContainer, toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
+import { apiHost } from '../../../apiLoc'
 
 const Pickup = () => {
   const [refId, setRefId] = useState()
@@ -22,7 +23,7 @@ const Pickup = () => {
       return
     }
     try {
-      const url = '/api/deliveryAgents/addEntry'
+      const url = `${apiHost}/api/deliveryAgents/addEntry`
       const response = await fetch(url, {
         method: 'post',
         body: JSON.stringify({ _id: refId }),

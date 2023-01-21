@@ -4,6 +4,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import { ToastContainer, toast } from 'react-toastify'
 import TrackingRep from '../../TrackingRep'
 import { useSelector } from 'react-redux'
+import { apiHost } from '../../../apiLoc'
 
 const Track = () => {
   const [refId, setRefId] = useState()
@@ -27,7 +28,7 @@ const Track = () => {
       return
     }
     try {
-      const url = '/api/couriers/track'
+      const url = `${apiHost}/api/couriers/track`
       const response = await fetch(url, {
         method: 'post',
         body: JSON.stringify({ _id: refId.trim() }),

@@ -1,8 +1,9 @@
 import { toast } from 'react-toastify'
+import { apiHost } from '../../apiLoc'
 
 export const login = (credential) => {
   return (dispatch) => {
-    const url = '/api/departments/loginDepartment'
+    const url = `${apiHost}/api/departments/loginDepartment`
     fetch(url, {
       method: 'post',
       body: JSON.stringify({
@@ -61,7 +62,7 @@ export const login = (credential) => {
 
 export const register = (details) => {
   return (dispatch) => {
-    const url = '/api/departments/addDepartment'
+    const url = `${apiHost}/api/departments/addDepartment`
     fetch(url, {
       method: 'post',
       body: JSON.stringify({
@@ -117,7 +118,7 @@ export const register = (details) => {
 
 export const getDepartmentInfo = (accessToken) => {
   return (dispatch) => {
-    const url = '/api/departments/getDepartmentInfo'
+    const url = `${apiHost}/api/departments/getDepartmentInfo`
     fetch(url, {
       method: 'get',
       headers: {
@@ -198,7 +199,7 @@ export const getDepartmentInfo = (accessToken) => {
 
 export const updateDepartmentInfo = (accessToken, details) => {
   return (dispatch) => {
-    const url = '/api/departments/updateDepartmentInfo'
+    const url = `${apiHost}/api/departments/updateDepartmentInfo`
     fetch(url, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -290,7 +291,7 @@ export const updateDepartmentInfo = (accessToken, details) => {
 
 export const loginDeliveryAgent = (credential) => {
   return (dispatch) => {
-    const url = '/api/deliveryAgents/loginDeliveryAgent'
+    const url = `${apiHost}/api/deliveryAgents/loginDeliveryAgent`
     fetch(url, {
       method: 'post',
       body: JSON.stringify({

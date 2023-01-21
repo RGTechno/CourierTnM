@@ -6,7 +6,7 @@ import FunctionsIcon from '@mui/icons-material/Functions'
 import DoneIcon from '@mui/icons-material/Done'
 import DeliveryDiningIcon from '@mui/icons-material/DeliveryDining'
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined'
-import { PieChart, pieChartDefaultProps } from 'react-minimal-pie-chart'
+import { PieChart } from 'react-minimal-pie-chart'
 
 const Dashboard = () => {
   const couriers = useSelector((state) => state.courier.couriers)

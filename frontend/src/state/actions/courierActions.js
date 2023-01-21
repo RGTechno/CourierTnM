@@ -1,6 +1,8 @@
+import { apiHost } from '../../apiLoc'
+
 export const getAllCouriers = (accessToken) => {
   return (dispatch) => {
-    const url = '/api/couriers/getCouriers'
+    const url = `${apiHost}/api/couriers/getCouriers`
     fetch(url, {
       method: 'get',
       headers: {

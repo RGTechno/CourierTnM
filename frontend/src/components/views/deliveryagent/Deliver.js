@@ -3,6 +3,7 @@ import { Box, IconButton, TextField } from '@mui/material'
 import DoneAllOutlinedIcon from '@mui/icons-material/DoneAllOutlined'
 import { ToastContainer, toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
+import { apiHost } from '../../../apiLoc'
 
 const Delivery = () => {
   const [refId, setRefId] = useState()
@@ -22,7 +23,7 @@ const Delivery = () => {
       return
     }
     try {
-      const url = '/api/deliveryAgents/markCourierAsDelivered'
+      const url = `${apiHost}/api/deliveryAgents/markCourierAsDelivered`
       const response = await fetch(url, {
         method: 'post',
         body: JSON.stringify({ _id: refId }),
