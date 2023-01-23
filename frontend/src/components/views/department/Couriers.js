@@ -240,8 +240,16 @@ const Couriers = () => {
     dispatch(getAllCouriers(state.auth.accessToken))
   }, [newCourierModalOpen, courierDetailModalOpen])
 
-  const courierRowsList = getRowsList(state.courier.couriers)
+  const [courierRowsList, setCourierRowsList] = useState(getRowsList(state.courier.couriers))
+
+  useEffect(() => {
+    setCourierRowsList(getRowsList(state.courier.couriers))
+  }, [state])
+
   const [rows, setRows] = useState(courierRowsList)
+  useEffect(() => {
+    setRows(courierRowsList)
+  }, [courierRowsList])
 
   const refIdSearch = (event) => {
     const searchedId = event.target.value
